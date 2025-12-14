@@ -1,0 +1,81 @@
+# ---------------------------------------------------------
+# PyCharm / IDE Files
+# ---------------------------------------------------------
+.idea/
+*.iml
+
+# VSCode (falls verwendet)
+.vscode/
+
+# ---------------------------------------------------------
+# Python Cache / Build / Distribution
+# ---------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+
+# Byte-compiled and optimized files
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ---------------------------------------------------------
+# Virtual Environments
+# ---------------------------------------------------------
+venv/
+env/
+.virtualenv/
+.venv/
+ENV/
+env.bak/
+
+# Poetry / pipenv
+.poetry/
+Pipfile.lock
+poetry.lock
+
+# ---------------------------------------------------------
+# OS / Editor Artefacts
+# ---------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------
+# Jupyter / Interactive
+# ---------------------------------------------------------
+.ipynb_checkpoints
+*.ipynb
+
+# ---------------------------------------------------------
+# Logs
+# ---------------------------------------------------------
+*.log
+
+# ---------------------------------------------------------
+# Project-specific
+# ---------------------------------------------------------
+# (Falls du später Datenfiles oder erzeugte Artefakte speicherst)
+data/
+outputs/
+results/
+models/
+
+# Examples but ignore generated artifacts
+examples/*/__pycache__/
+examples/*/*.pyc
+
+# ---------------------------------------------------------
+# PyCharm caches (extra safe)
+# ---------------------------------------------------------
+out/
