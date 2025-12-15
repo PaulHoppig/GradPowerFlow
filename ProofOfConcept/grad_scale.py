@@ -1,16 +1,10 @@
 import jax
 import jax.numpy as jnp
 
-#Vergleich skalieren Gradienten und Loss gewichten
-#Vergleich WLS-Solver
-#Schauen wie es nach n Iterationen aussieht --> Graphen programmieren y: Loss, x: Iterationen
 jax.config.update("jax_enable_x64", True)
 
-# -------------------------------------------------
-# 1. Wahre Werte & Messwerte
-# -------------------------------------------------
 
-# Wahre physikalische Werte (konsistent):
+# Wahre physikalische Werte
 U1_true = 230.0
 R_true  = 5.0
 I_true  = 2.0
@@ -18,20 +12,21 @@ U2_true = U1_true + R_true * I_true  # = 240 V
 
 theta_true = jnp.array([U1_true, U2_true, R_true, I_true])
 
-# Messwerte: nur U2 ist "kaputt" (242 statt 240)
-theta_meas = jnp.array([230.0, 242.0, 5.0, 2.0])  # [U1, U2, R, I]
+# Messwerte: U2 ist fehlerhaft (242V statt 240V)
+theta_meas = jnp.array([230.0, 242.0, 5.0, 2.0])
 
-#Vertrsuen in die Messwerte
+#Vertrauen in die Messwerte
 security = jnp.array([
-    1e6,   # U1
-    0.000001,   # U2 (unsicher)
-    1e6,   # R
-    1e6,   # I
+    1e3,        # U1 sicher
+    0.001,   # U2 unsicher
+    1e3,        # R  sicher
+    1e3,        # I  sicher
 ])
 
-# Unsichere Parameter sollen größere Schritte machen:
-base_weights = 1.0 / security           # unsicher -> großer Wert
-update_weights = base_weights / base_weights.max()  # normieren auf [0, 1]
+# Normieren der Unsicherheit auf weights = [0, 1]
+# Dabei sollen sich unsichere Parameter mehr bewegen dürfen als sichere
+base_weights = 1.0 / security
+update_weights = base_weights / base_weights.max()
 
 print("Wahre Parameter:       ", theta_true)
 print("Messwerte (Start):    ", theta_meas)
@@ -40,25 +35,19 @@ print("Update-Gewichte:      ", update_weights)
 print()
 
 def residual(theta):
-    """
-    theta = [U1, U2, R, I]
-    r = (U2 - U1) - R * I           #Abweiung * Weights, dann Residual mit in Loss nehmen
-    """
     U1, U2, R, I = theta
     return (U2 - U1) - R * I
 
-def loss(theta):          #Änderung --> Gewichte normieren, statt Gradienten Skalieren
-    #r = weights*residual(theta)
+def loss(theta):
     r = residual(theta)
-
     return r**2
 
 
 grad_loss = jax.grad(loss)
 
-def main():
+def gradientDescent():
     theta = theta_meas.copy()
-    lr = 0.05
+    lr = 0.4
     step = 0
 
     print("Startzustand:")
@@ -79,9 +68,8 @@ def main():
         theta = theta - lr * scaled_g
         step += 1
 
-        print("\n----------------------------------------")
-        print(f"Gradient-Descent Schritt {step}")
-        print("----------------------------------------")
+
+        print(f"\n\nGradient-Descent Schritt: {step}")
         print("Gradienten (roh):        ", g)
         print("Gradienten (skaliert):   ", scaled_g)
         print("Neue Parameter theta:    ", theta)
@@ -94,15 +82,13 @@ def main():
         if user_input.lower() == "q":
             break
 
-    print("\n================================================")
+    print("\n")
     print("Optimierung beendet.")
     print("Wahre Parameter:      ", theta_true)
     print("Messwerte (Start):    ", theta_meas)
     print("Optimierte Parameter: ", theta)
     print("Abweichung zu true:   ", theta - theta_true)
     print("Abweichung zu meas:   ", theta - theta_meas)
-    print("================================================")
 
 
-if __name__ == "__main__":
-    main()
+gradientDescent()

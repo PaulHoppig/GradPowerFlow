@@ -23,10 +23,10 @@ x0 = np.array([
 # lowest confidence on u2
 # ---------------------------
 weights = np.array([
-    1.0,   # u1
+    1000.0,   # u1
     0.001,   # u2 (lowest weight)
-    1.0,   # r
-    1.0    # i
+    1000.0,   # r
+    1000.0    # i
 ])
 
 # SciPy applies scaling internally
