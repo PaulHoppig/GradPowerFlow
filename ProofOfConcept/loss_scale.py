@@ -1,8 +1,6 @@
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
-
 # Wahre physikalische Werte
 U1_true = 230.0
 R_true  = 5.0
@@ -36,7 +34,7 @@ def residual(theta):
     U1, U2, R, I = theta
     return (U2 - U1) - R * I
 
-# ---- Reparametrisierung: theta = theta_meas + w * phi ----
+#  Reparametrisierung: theta = theta_meas + w * phi
 def theta_from_phi(phi):
     return theta_meas + update_weights * phi
 
@@ -63,7 +61,7 @@ def gradientDescent():
     while True:
         g_phi = grad_loss_phi(phi)
 
-        # Standard GD in phi (keine manuelle Gradienten-Skalierung mehr)
+        # Gradient Descent
         phi = phi - lr * g_phi
         step += 1
 

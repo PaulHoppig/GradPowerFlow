@@ -18,7 +18,6 @@ def loss(U2):
     return r**2
 
 
-
 #Erster Schritt Gradient Descent mit Lernrate = 0.1
 learning_rate = 0.2
 U2_current = U2_init

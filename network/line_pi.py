@@ -6,20 +6,20 @@ from network.edge import Edge
 @dataclass(frozen=True)
 class Line(Edge):
 
-    r_ohm: float
-    x_ohm: float
-    b_shunt_siemens: float = 0.0
+    r: float
+    x: float
+    b_shunt: float = 0.0
 
     def stamp_ybus(self, ybus):
 
         i = self.from_bus
         j = self.to_bus
 
-        z = self.r_ohm + 1j * self.x_ohm
+        z = self.r + 1j * self.x
         y_series = 1.0 / z
 
         # total shunt susceptance b_shunt_siemens -> split half to each end
-        y_sh_end = 0.5j * self.b_shunt_siemens
+        y_sh_end = 0.5j * self.b_shunt
 
         ybus = ybus.at[i, i].add(y_series + y_sh_end)
         ybus = ybus.at[j, j].add(y_series + y_sh_end)

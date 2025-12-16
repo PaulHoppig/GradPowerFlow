@@ -11,5 +11,5 @@ from network.bus import Bus, BusType
 from network.edge import Edge
 
 
-@dataclass(frozen=True)
-class NetworkModel:
+#@dataclass(frozen=True)
+#class NetworkModel:

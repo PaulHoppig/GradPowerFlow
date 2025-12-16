@@ -1,8 +1,6 @@
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)
-
 
 # Wahre physikalische Werte
 U1_true = 230.0
@@ -18,7 +16,7 @@ theta_meas = jnp.array([230.0, 242.0, 5.0, 2.0])
 #Vertrauen in die Messwerte
 security = jnp.array([
     1e3,        # U1 sicher
-    0.001,   # U2 unsicher
+    0.001,      # U2 unsicher
     1e3,        # R  sicher
     1e3,        # I  sicher
 ])
@@ -43,7 +41,7 @@ def loss(theta):
     return r**2
 
 
-grad_loss = jax.grad(loss)
+grad_loss = jax.grad(loss) #erzeugt ein callable
 
 def gradientDescent():
     theta = theta_meas.copy()
